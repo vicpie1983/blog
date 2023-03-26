@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.utils import timezone
 from .models import Post, Category
 
@@ -12,4 +12,11 @@ def post_list(request):
     ).order_by('-published_date') # 최근 발행글이 가장 앞에 오도록 정렬
 
     return render(request, 'blog/post_list.html', {'categorys': categorys, 'posts': posts})
+
+
+def post_detail(request, pk):
+    categorys = Category.objects.filter(is_publish=True).order_by('ordering')
+
+    post = get_object_or_404(Post, pk=pk)
+    return render(request, 'blog/post_detail.html', {'categorys': categorys, 'post': post})
 
