@@ -6,18 +6,23 @@
 				<link rel="stylesheet" href="{% static 'css/blog.css' %}">
 		</head>
 		<body>
+				<div>
+						<h1><a href="/">빅파이</a></h1>
+				</div>
 
-<div>
-		<h1><a href="/">빅파이</a></h1>
-</div>
-{% for post in posts %}
-	<div>
-			<p>{{ post.title }}</p>
-			<p>{{ post.category.name }}</p>
-			<p>{{ post.published_date|date:'y년 n월 j일 H시 i분' }}</p>
-			<p>{{ post.text|linebreaksbr }}</p>
-	</div>
-{% endfor %}
+				<ul>
+				{% for category in categorys %}
+						<li>{{ category.name}}</li>
+				{% endfor %}
+				</ul>
 
+				{% for post in posts %}
+					<div>
+							<p>{{ post.title }}</p>
+							<p>{{ post.category.name }}</p>
+							<p>{{ post.published_date|date:'y년 n월 j일 H시 i분' }}</p>
+							<p>{{ post.text|linebreaksbr }}</p>
+					</div>
+				{% endfor %}
 		</body>
 </html>
