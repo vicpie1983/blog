@@ -10,9 +10,11 @@
 						<h1><a href="/">빅파이</a></h1>
 				</div>
 
-				<ul>
-						<li><a href="{% url 'post_new' %}">새글작성</a></li>
-				</ul>
+				{% if user.is_authenticated %}
+						<ul>
+								<li><a href="{% url 'post_new' %}">새글작성</a></li>
+						</ul>
+				{% endif %}
 
 				<ul>
 				{% for category in categorys %}
