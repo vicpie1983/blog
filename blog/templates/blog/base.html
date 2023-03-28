@@ -11,6 +11,10 @@
 				</div>
 
 				<ul>
+						<li><a href="{% url 'post_new' %}">새글작성</a></li>
+				</ul>
+
+				<ul>
 				{% for category in categorys %}
 						<li>{{ category.name}}</li>
 				{% endfor %}
