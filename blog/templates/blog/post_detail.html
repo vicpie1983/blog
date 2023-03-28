@@ -16,8 +16,15 @@
 
 	<hr>
 
+	<a href="{% url 'add_comment_to_post' pk=post.pk %}">댓글 작성하기</a>
 	{% for comment in post.comments.all %}
 		<div>
+				{% if user.is_authenticated %}
+					<a href="{% url 'comment_remove' pk=comment.pk %}">댓글삭제</a>
+					{% if not comment.approved_comment %}
+							<a href="{% url 'comment_approve' pk=comment.pk %}">댓글승인</a>
+					{% endif %}
+				{% endif %}
 				<p>{{ comment.author }}</p>
 				<p>{{ comment.created_date }}</p>
 				<p>{{ comment.text|linebreaks }}</p>
