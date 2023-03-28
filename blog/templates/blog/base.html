@@ -13,6 +13,7 @@
 				{% if user.is_authenticated %}
 						<ul>
 								<li><a href="{% url 'post_new' %}">새글작성</a></li>
+								<li><a href="{% url 'post_draft_list' %}">초안리스트</a></li>
 						</ul>
 				{% endif %}
 

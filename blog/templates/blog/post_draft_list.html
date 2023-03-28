@@ -1,0 +1,12 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+		{% for post in posts %}
+			<div>
+					<p><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></p>
+					<p>{{ post.category.name }}</p>
+					<p>{{ post.created_date|date:'y년 n월 j일 H시 i분' }}</p>
+					<p>{{ post.text|linebreaksbr }}</p>
+			</div>
+		{% endfor %}
+{% endblock %}
