@@ -3,7 +3,11 @@
 {% block content %}
 		{% for post in posts %}
 			<div>
-					<p><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></p>
+					<p><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}
+							{% if post.comments.count %}
+								[{{ post.comments.count }}]
+							{% endif %}
+						</a></p>
 					<p>{{ post.category.name }}</p>
 					<p>{{ post.published_date|date:'y년 n월 j일 H시 i분' }}</p>
 					<p>{{ post.text|linebreaksbr }}</p>

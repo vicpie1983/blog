@@ -13,4 +13,18 @@
 			<p><a href="{% url 'post_publish' pk=post.pk %}">발행</a></p>
 	{% endif %}
 	<p>{{ post.text|linebreaksbr }}</p>
+
+	<hr>
+
+	{% for comment in post.comments.all %}
+		<div>
+				<p>{{ comment.author }}</p>
+				<p>{{ comment.created_date }}</p>
+				<p>{{ comment.text|linebreaks }}</p>
+		</div>
+	{% empty %}
+		<div>
+				<p>작성된 댓글이 없습니다.</p>
+		</div>
+	{% endfor %}
 {% endblock %}
