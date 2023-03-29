@@ -1,6 +1,11 @@
+import os
+from uuid import uuid4
+from django.http import JsonResponse
+from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
+from django.views.decorators.csrf import csrf_exempt
 from .models import Post, Category, Comment
 from .forms import PostForm, CommentForm
 
@@ -94,4 +99,32 @@ def comment_remove(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     comment.delete()
     return redirect('post_detail', pk=comment.post.pk)
+
+@csrf_exempt
+def upload_image(request):
+    if request.method != "POST":
+        return JsonResponse({'Error Message': "Wrong request"})
+
+    # If it's not series and not article, handle it differently
+  
+
+    file_obj = request.FILES['file']
+    file_name_suffix = file_obj.name.split(".")[-1]
+    if file_name_suffix not in ["jpg", "png", "gif", "jpeg"]:
+        return JsonResponse({"Error Message": f"Wrong file suffix ({file_name_suffix}), supported are .jpg, .png, .gif, .jpeg"})
+
+    file_path = os.path.join(settings.MEDIA_ROOT, 'blog', file_obj.name)
+    
+    if os.path.exists(file_path):
+        file_obj.name = str(uuid4()) + '.' + file_name_suffix
+        file_path = os.path.join(settings.MEDIA_ROOT, 'blog', file_obj.name)
+
+    with open(file_path, 'wb+') as f:
+        for chunk in file_obj.chunks():
+            f.write(chunk)
+
+        return JsonResponse({
+            'message': 'Image uploaded successfully',
+            'location': os.path.join(settings.MEDIA_URL, 'blog',  file_obj.name)
+        })   
 

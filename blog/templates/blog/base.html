@@ -10,11 +10,15 @@
 						tinyMCE.init({
 							mode: "textareas",
 							theme: "silver",
-							plugins: "spellchecker,directionality,paste,searchreplace",
+							plugins: "textcolor,save,link,image,media,preview,codesample,contextmenu,table,code,lists,fullscreen,insertdatetime,nonbreaking,contextmenu,anchor,spellchecker,directionality,paste,searchreplace",
+							toolbar1: "link image media|",
 							language: "ko_KR",
 							directionality: "{{ directionality }}",
 							spellchecker_languages : "{{ spellchecker_languages }}",
-							spellchecker_rpc_url : "{{ spellchecker_rpc_url }}"
+							spellchecker_rpc_url : "{{ spellchecker_rpc_url }}",
+							images_upload_url: "upload_image",
+							width: "100%",
+							height: 600
 						});</script>
 		</head>
 		<body>
