@@ -1,9 +1,21 @@
 {% load static %}
+<!DOCTYPE html>
 <html>
 		<head>
 				<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
 				<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
 				<link rel="stylesheet" href="{% static 'css/blog.css' %}">
+				<script src="{% static 'tinymce/tinymce.min.js' %}"></script>
+				<script>
+						tinyMCE.init({
+							mode: "textareas",
+							theme: "silver",
+							plugins: "spellchecker,directionality,paste,searchreplace",
+							language: "ko_KR",
+							directionality: "{{ directionality }}",
+							spellchecker_languages : "{{ spellchecker_languages }}",
+							spellchecker_rpc_url : "{{ spellchecker_rpc_url }}"
+						});</script>
 		</head>
 		<body>
 				<div>

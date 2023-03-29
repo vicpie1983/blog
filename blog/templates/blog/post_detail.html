@@ -12,7 +12,7 @@
 	{% else %}
 			<p><a href="{% url 'post_publish' pk=post.pk %}">발행</a></p>
 	{% endif %}
-	<p>{{ post.text|linebreaksbr }}</p>
+	<p>{{ post.text|safe}}</p>
 
 	<hr>
 
