@@ -12,8 +12,13 @@
 
 				{% if user.is_authenticated %}
 						<ul>
+								<li><a href="{% url 'logout' %}">로그아웃</a></li>
 								<li><a href="{% url 'post_new' %}">새글작성</a></li>
 								<li><a href="{% url 'post_draft_list' %}">초안리스트</a></li>
+						</ul>
+				{% else %}
+						<ul>
+								<li><a href="{% url 'login' %}">로그인</a></li>
 						</ul>
 				{% endif %}
 
