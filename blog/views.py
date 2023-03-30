@@ -6,6 +6,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
+
 from .models import Post, Category, Comment
 from .forms import PostForm, CommentForm
 
@@ -16,7 +18,29 @@ def post_list(request):
         published_date__lte=timezone.now() # 발행된 글
     ).order_by('-published_date') # 최근 발행글이 가장 앞에 오도록 정렬
 
-    return render(request, 'blog/post_list.html', {'posts': posts})
+    page = request.GET.get('page')
+    posts_per_page = 2 # 페이지당 포스트 개수
+    paginator = Paginator(posts, posts_per_page)
+
+    try:
+        page_obj = paginator.page(page)
+    except PageNotAnInteger:
+        page = 1
+        page_obj = paginator.page(page)
+    except EmptyPage:
+        page = paginator.num_pages
+        page_obj = paginator.page(page)
+
+    left_index = (int(page) - 2)
+    if left_index < 1:
+        left_index = 1
+
+    right_index = (int(page) + 2)
+    if right_index > paginator.num_pages:
+        right_index = paginator.num_pages
+
+    page_range = range(left_index, right_index + 1)
+    return render(request, 'blog/post_list.html', {'posts': page_obj, 'page_range': page_range, 'paginator': paginator})
 
 
 def post_detail(request, pk):
@@ -56,7 +80,30 @@ def post_edit(request, pk):
 @login_required
 def post_draft_list(request):
     posts = Post.objects.filter(published_date__isnull=True).order_by('-created_date')
-    return render(request, 'blog/post_draft_list.html', {'posts': posts})
+
+    page = request.GET.get('page')
+    posts_per_page = 2 # 페이지당 포스트 개수
+    paginator = Paginator(posts, posts_per_page)
+
+    try:
+        page_obj = paginator.page(page)
+    except PageNotAnInteger:
+        page = 1
+        page_obj = paginator.page(page)
+    except EmptyPage:
+        page = paginator.num_pages
+        page_obj = paginator.page(page)
+
+    left_index = (int(page) - 2)
+    if left_index < 1:
+        left_index = 1
+
+    right_index = (int(page) + 2)
+    if right_index > paginator.num_pages:
+        right_index = paginator.num_pages
+
+    page_range = range(left_index, right_index + 1)
+    return render(request, 'blog/post_draft_list.html', {'posts': page_obj, 'page_range': page_range, 'paginator': paginator})
 
 
 @login_required

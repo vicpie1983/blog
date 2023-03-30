@@ -13,4 +13,26 @@
 					<p>{{ post.text|safe|linebreaksbr }}</p>
 			</div>
 		{% endfor %}
+
+		<div>
+				{% if posts.has_other_pages %}
+						<ul>
+								{% if 1 not in page_range %}
+									<li><a href="?page=1">1</a></li>
+									<li>...</li>
+								{% endif %}
+								{% for page in page_range %}
+									{% if page == posts.number %}
+											<li><b>{{ page }}</b></li>
+									{% else %}
+											<li><a href="?page={{ page }}">{{ page }}</a></li>
+									{% endif %}
+								{% endfor %}
+								{% if paginator.num_pages not in page_range %}
+									<li>...</li>
+									<li><a href="?page={{ paginator.num_pages }}">{{ paginator.num_pages }}</a></li>
+								{% endif %}
+						</ul>
+				{% endif %}
+		</div>
 {% endblock %}
