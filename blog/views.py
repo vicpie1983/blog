@@ -19,7 +19,7 @@ def post_list(request):
     ).order_by('-published_date') # 최근 발행글이 가장 앞에 오도록 정렬
 
     page = request.GET.get('page')
-    posts_per_page = 2 # 페이지당 포스트 개수
+    posts_per_page = settings.POSTS_PER_PAGE # 페이지당 포스트 개수
     paginator = Paginator(posts, posts_per_page)
 
     try:
@@ -82,7 +82,7 @@ def post_draft_list(request):
     posts = Post.objects.filter(published_date__isnull=True).order_by('-created_date')
 
     page = request.GET.get('page')
-    posts_per_page = 2 # 페이지당 포스트 개수
+    posts_per_page = settings.POSTS_PER_PAGE # 페이지당 포스트 개수
     paginator = Paginator(posts, posts_per_page)
 
     try:
@@ -174,4 +174,33 @@ def upload_image(request):
             'message': 'Image uploaded successfully',
             'location': os.path.join(settings.MEDIA_URL, 'blog',  file_obj.name)
         })   
+
+
+def category(request, pk):
+    category = get_object_or_404(Category, pk=pk)
+    posts = category.posts.filter(published_date__isnull=False).order_by('-published_date')
+
+    page = request.GET.get('page')
+    posts_per_page = settings.POSTS_PER_PAGE # 페이지당 포스트 개수
+    paginator = Paginator(posts, posts_per_page)
+
+    try:
+        page_obj = paginator.page(page)
+    except PageNotAnInteger:
+        page = 1
+        page_obj = paginator.page(page)
+    except EmptyPage:
+        page = paginator.num_pages
+        page_obj = paginator.page(page)
+
+    left_index = (int(page) - 2)
+    if left_index < 1:
+        left_index = 1
+
+    right_index = (int(page) + 2)
+    if right_index > paginator.num_pages:
+        right_index = paginator.num_pages
+
+    page_range = range(left_index, right_index + 1)
+    return render(request, 'blog/category.html', {'posts': page_obj, 'page_range': page_range, 'paginator': paginator})
 

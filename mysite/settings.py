@@ -166,3 +166,5 @@ TINYMCE_DEFAULT_CONFIG = {
 
 }
 
+# pagination settings
+POSTS_PER_PAGE = 3
