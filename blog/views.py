@@ -1,6 +1,6 @@
 import os
 from uuid import uuid4
-from django.http import JsonResponse
+from django.http import JsonResponse, Http404
 from django.conf import settings
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
@@ -45,6 +45,11 @@ def post_list(request):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+
+    if not request.user.is_authenticated:
+        if not post.published_date:
+            raise Http404('존재하지 않는 포스트입니다.')
+
     return render(request, 'blog/post_detail.html', {'post': post})
 
 
