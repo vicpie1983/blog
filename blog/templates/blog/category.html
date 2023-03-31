@@ -8,7 +8,7 @@
 								[{{ post.comments.count }}]
 							{% endif %}
 						</a></p>
-					<p>{{ post.category.name }}</p>
+					<p><a href="{% url 'category' pk=post.category.pk %}">{{ post.category.name }}</a></p>
 					<p>{{ post.published_date|date:'y년 n월 j일 H시 i분' }}</p>
 					<p>{{ post.text|safe|linebreaksbr }}</p>
 			</div>
