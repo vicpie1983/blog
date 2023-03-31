@@ -181,8 +181,14 @@ def upload_image(request):
         })   
 
 
+# category_detail
 def category(request, pk):
     category = get_object_or_404(Category, pk=pk)
+
+    if not request.user.is_authenticated:
+        if not category.is_publish:
+            raise Http404('존재하지 않는 카테고리 입니다.')
+
     posts = category.posts.filter(published_date__isnull=False).order_by('-published_date')
 
     page = request.GET.get('page')
