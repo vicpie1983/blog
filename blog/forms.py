@@ -3,10 +3,11 @@ from .models import Post, Comment
 
 
 class PostForm(forms.ModelForm):
+    tags = forms.CharField(label='태그', max_length=200, required=False)
 
     class Meta:
         model = Post
-        fields = ('category', 'title', 'text',)
+        fields = ('category', 'title', 'text', )
         labels = {
             "category": "카테고리",
             "title": "제목",

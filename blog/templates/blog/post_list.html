@@ -12,6 +12,8 @@
 					<p>{{ post.published_date|date:'y년 n월 j일 H시 i분' }}</p>
 					<p>{{ post.text|safe|linebreaksbr }}</p>
 			</div>
+		{% empty %}
+			<div><p>컨텐츠가 없습니다.</p></div>
 		{% endfor %}
 
 		<div>

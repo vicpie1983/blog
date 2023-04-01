@@ -14,6 +14,14 @@
 	{% endif %}
 	<p>{{ post.text|safe}}</p>
 
+	<div>
+			{% for tag in post.tags.all %}
+			<span><a href="{% url 'tag' pk=tag.pk %}">{{ tag.name }}</a></span>
+			{% empty %}
+				<span>태그없음</span>
+			{% endfor %}
+	</div>
+
 	<hr>
 
 	<a href="{% url 'add_comment_to_post' pk=post.pk %}">댓글 작성하기</a>
