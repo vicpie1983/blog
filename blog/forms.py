@@ -4,6 +4,7 @@ from .models import Post, Comment
 
 class PostForm(forms.ModelForm):
     tags = forms.CharField(label='태그', max_length=200, required=False)
+    series = forms.CharField(label='시리즈', max_length=200, required=False)
 
     class Meta:
         model = Post

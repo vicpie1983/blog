@@ -8,7 +8,7 @@ from django.contrib.auth.decorators import login_required
 from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
-from .models import Post, Category, Comment, Tag
+from .models import Post, Category, Comment, Tag, Series
 from .forms import PostForm, CommentForm
 
 
@@ -59,6 +59,7 @@ def post_new(request):
         form = PostForm(request.POST)
         if form.is_valid():
             cleaned_tags = form.cleaned_data['tags']
+            cleaned_series = form.cleaned_data['series']
 
             post = form.save(commit=False)
             post.author = request.user
@@ -74,6 +75,12 @@ def post_new(request):
                     _tag, _ = Tag.objects.get_or_create(name=strip_tag)
                     post.tags.add(_tag)
 
+            if cleaned_series:
+                strip_series = cleaned_series.strip()
+                if strip_series:
+                    _series, _ = Series.objects.get_or_create(name=strip_series)
+                    post.series.add(_series)
+
             return redirect('post_detail', pk=post.pk)
     else:
         form = PostForm()
@@ -84,11 +91,13 @@ def post_new(request):
 def post_edit(request, pk):
     post = get_object_or_404(Post, pk=pk)
     tags = post.tags.all()
+    series = post.series.all()
 
     if request.method == "POST":
         form = PostForm(request.POST, instance=post)
         if form.is_valid():
             cleaned_tags = form.cleaned_data['tags']
+            cleaned_series = form.cleaned_data['series']
 
             post = form.save(commit=False)
             post.author = request.user
@@ -105,13 +114,30 @@ def post_edit(request, pk):
                     _tag, _ = Tag.objects.get_or_create(name=strip_tag)
                     post.tags.add(_tag)
 
+            post.series.clear()
+            if cleaned_series:
+                series_list = cleaned_series.split(',')
+                for serie in series_list:
+                    strip_serie = serie.strip()
+                    if not strip_serie:
+                        continue
+
+                    _serie, _ = Series.objects.get_or_create(name=strip_serie)
+                    post.series.add(_serie)
+
             return redirect('post_detail', pk=post.pk)
     else:
         tag_list = list()
         for tag in tags:
             tag_list.append(tag.name)
         tag_str = ', '.join(tag_list)
-        form = PostForm(instance=post, initial={'tags':tag_str})
+
+        series_list = list()
+        for serie in series:
+            series_list.append(serie.name)
+        series_str = ', '.join(series_list)
+
+        form = PostForm(instance=post, initial={'tags':tag_str, 'series': series_str})
     return render(request, 'blog/post_edit.html', {'form': form})
 
 
@@ -252,6 +278,39 @@ def category(request, pk):
 def tag(request, pk):
     tag = get_object_or_404(Tag, pk=pk)
     posts = tag.post_set.filter(
+        category__is_publish=True, # 공개 카테고리
+        published_date__lte=timezone.now() # 발행된 글
+    ).order_by('-published_date') # 최근 발행글이 가장 앞에 오도록 정렬
+
+    page = request.GET.get('page')
+    posts_per_page = settings.POSTS_PER_PAGE # 페이지당 포스트 개수
+    paginator = Paginator(posts, posts_per_page)
+
+    try:
+        page_obj = paginator.page(page)
+    except PageNotAnInteger:
+        page = 1
+        page_obj = paginator.page(page)
+    except EmptyPage:
+        page = paginator.num_pages
+        page_obj = paginator.page(page)
+
+    left_index = (int(page) - 2)
+    if left_index < 1:
+        left_index = 1
+
+    right_index = (int(page) + 2)
+    if right_index > paginator.num_pages:
+        right_index = paginator.num_pages
+
+    page_range = range(left_index, right_index + 1)
+    return render(request, 'blog/post_list.html', {'posts': page_obj, 'page_range': page_range, 'paginator': paginator})
+
+
+# series_detail
+def series(request, pk):
+    series = get_object_or_404(Series, pk=pk)
+    posts = series.post_set.filter(
         category__is_publish=True, # 공개 카테고리
         published_date__lte=timezone.now() # 발행된 글
     ).order_by('-published_date') # 최근 발행글이 가장 앞에 오도록 정렬

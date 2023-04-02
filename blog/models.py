@@ -5,6 +5,13 @@ from django.utils import timezone
 from tinymce.models import HTMLField
 
 
+class Series(models.Model):
+    name = models.CharField(max_length=200, verbose_name='시리즈')
+
+    def __str__(self):
+        return self.name
+
+
 class Tag(models.Model):
     name = models.CharField(max_length=32, verbose_name='태그')
 
@@ -32,6 +39,7 @@ class Post(models.Model):
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
     tags = models.ManyToManyField('blog.Tag', verbose_name='태그')
+    series = models.ManyToManyField('blog.Series', verbose_name='시리즈')
 
     def publish(self):
         self.published_date = timezone.now()

@@ -22,6 +22,14 @@
 			{% endfor %}
 	</div>
 
+	<div>
+			{% for series in post.series.all %}
+			<span><a href="{% url 'series' pk=series.pk %}">{{ series.name }}</a></span>
+			{% empty %}
+				<span>시리즈없음</span>
+			{% endfor %}
+	</div>
+
 	<hr>
 
 	<a href="{% url 'add_comment_to_post' pk=post.pk %}">댓글 작성하기</a>
