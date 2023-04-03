@@ -21,6 +21,9 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ('author', 'text',)
+        widgets = {
+            'text': forms.TextInput(attrs={'size': '100'})
+        }
         labels = {
             "author": "이름",
             "text": "내용",
