@@ -339,3 +339,43 @@ def series(request, pk):
     page_range = range(left_index, right_index + 1)
     return render(request, 'blog/post_list.html', {'posts': page_obj, 'page_range': page_range, 'paginator': paginator})
 
+
+def search(request):
+    query = request.GET.get('query', '')
+    query = query.strip()
+    referer = request.META.get('HTTP_REFERER')
+    if query:
+        posts = Post.objects.filter(
+            title__icontains=query,
+            category__is_publish=True, # 공개 카테고리
+            published_date__lte=timezone.now() # 발행된 글
+        ).order_by('-published_date') # 최근 발행글이 가장 앞에 오도록 정렬
+
+        result_count = len(posts)
+
+        page = request.GET.get('page')
+        posts_per_page = settings.POSTS_PER_PAGE # 페이지당 포스트 개수
+        paginator = Paginator(posts, posts_per_page)
+
+        try:
+            page_obj = paginator.page(page)
+        except PageNotAnInteger:
+            page = 1
+            page_obj = paginator.page(page)
+        except EmptyPage:
+            page = paginator.num_pages
+            page_obj = paginator.page(page)
+
+        left_index = (int(page) - 2)
+        if left_index < 1:
+            left_index = 1
+
+        right_index = (int(page) + 2)
+        if right_index > paginator.num_pages:
+            right_index = paginator.num_pages
+
+        page_range = range(left_index, right_index + 1)
+        return render(request, 'blog/search.html', {'posts': page_obj, 'page_range': page_range, 'paginator': paginator, 'query': query, 'result_count': result_count})
+    else:
+        return redirect(referer)
+

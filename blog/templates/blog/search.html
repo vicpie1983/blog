@@ -1,0 +1,41 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<div><p>검색어: <b>{{ query }}</b>, 검색결과: {{ result_count }}개</p></div>
+		{% for post in posts %}
+			<div>
+					<p><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}
+							{% if post.comments.count %}
+								[{{ post.comments.count }}]
+							{% endif %}
+						</a></p>
+					<p><a href="{% url 'category' pk=post.category.pk %}">{{ post.category.name }}</a></p>
+					<p>{{ post.published_date|date:'y년 n월 j일 H시 i분' }}</p>
+					<p>{{ post.text|safe|linebreaksbr }}</p>
+			</div>
+		{% empty %}
+			<div><p>컨텐츠가 없습니다.</p></div>
+		{% endfor %}
+
+		<div>
+				{% if posts.has_other_pages %}
+						<ul>
+								{% if 1 not in page_range %}
+									<li><a href="?query={{ query }}&page=1">1</a></li>
+									<li>...</li>
+								{% endif %}
+								{% for page in page_range %}
+									{% if page == posts.number %}
+											<li><b>{{ page }}</b></li>
+									{% else %}
+										<li><a href="?query={{ query }}&page={{ page }}">{{ page }}</a></li>
+									{% endif %}
+								{% endfor %}
+								{% if paginator.num_pages not in page_range %}
+									<li>...</li>
+										<li><a href="?query={{ query }}&page={{ paginator.num_pages }}">{{ paginator.num_pages }}</a></li>
+								{% endif %}
+						</ul>
+				{% endif %}
+		</div>
+{% endblock %}
