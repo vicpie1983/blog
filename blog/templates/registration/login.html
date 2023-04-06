@@ -1,12 +1,41 @@
 {% extends "blog/base.html" %}
 
 {% block content %}
+        <!-- Page Header-->
+		<header class="masthead" style="background-image: url('/static/img/home-bg.jpg')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>빅파이</h1>
+                            <span class="subheading">VicPie(Victory Pie)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+		<div class="text-center">
+		<main class="form-signin w-100 m-auto">
 	{% if form.errors %}
 		<p>아이디와 비밀번호가 일치하지 않습니다.</p>
 	{% endif %}
 
 	<form method="POST" action="{% url 'login' %}">
 			{% csrf_token %}
+    <h2 class="h3 mb-3 fw-normal">환영합니다</h2>
+
+    <div class="form-floating">
+	  <input type="text" name="username" required id="floatingInput" class="form-control" placeholder="아이디">
+      <label for="floatingInput">아이디</label>
+    </div>
+    <div class="form-floating">
+	  <input type="password" name="password" required id="floatingPassword" placeholder="패스워드" class="form-control">
+      <label for="floatingPassword">패스워드</label>
+    </div>
+
+	<input type="hidden" name="next" value="{{ next }}" />
+    <button class="w-100 btn btn-lg btn-primary" type="submit">로그인</button>
+<!--
 			<table>
 					<tr>
 							<td>{{ form.username.label_tag }}</td>
@@ -20,5 +49,8 @@
 
 			<button type="submit">로그인</button>
 			<input type="hidden" name="next" value="{{ next }}" />
+-->
 	</form>
+		</main>
+		</div>
 {% endblock %}

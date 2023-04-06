@@ -1,9 +1,42 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-<h1>댓글 작성하기</h1>
-<form method="POST">{% csrf_token %}
-		{{ form.as_p }}
-		<button type="submit">저장</button>
-</form>
+        <!-- Page Header-->
+		<header class="masthead" style="background-image: url('/static/img/contact-bg.jpg')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>빅파이</h1>
+                            <span class="subheading">VicPie(Victory Pie)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content-->
+        <main class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+						<p>방금 본 글과 관련해서 남기고 싶은 말이 있나요? 인사도 괜찮습니다.</p>
+                        <div class="my-5">
+							<form id="contactForm" method="POST">{% csrf_token %}
+                                <div class="form-floating">
+									<input class="form-control" type="text" name="author" required id="name" placeholder="작성자" />
+                                    <label for="name">이름</label>
+                                </div>
+                                <div class="form-floating">
+                                    <textarea class="form-control" name="text" id="message" placeholder="댓글을 남겨주세요." style="height: 12rem" required></textarea>
+                                    <label for="message">댓글</label>
+                                </div>
+                                <br />
+                                <!-- Submit Button-->
+                                <button class="btn btn-primary text-uppercase" id="submitButton" type="submit">저장</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
 {% endblock %}

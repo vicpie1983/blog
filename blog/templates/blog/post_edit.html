@@ -1,9 +1,31 @@
 {% extends 'blog/base.html' %}
 
 {% block content %}
-	<h1>새글작성</h1>
-	<form method="POST">{%csrf_token %}
-			{{ form.as_p }}
-			<button type="submit">저장</button>
-	</form>
+        <!-- Page Header-->
+		<header class="masthead" style="background-image: url('/static/img/home-bg.jpg')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>빅파이</h1>
+                            <span class="subheading">VicPie(Victory Pie)</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Main Content-->
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+						<div class="post-preview">
+							<h2>새글작성</h2>
+							<form method="POST">{%csrf_token %}
+								{{ form.as_p }}
+								<button type="submit">저장</button>
+							</form>
+						</div>
+				</div>
+			</div>
+		</div>
 {% endblock %}

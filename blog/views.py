@@ -138,6 +138,7 @@ def post_edit(request, pk):
         series_str = ', '.join(series_list)
 
         form = PostForm(instance=post, initial={'tags':tag_str, 'series': series_str})
+        print(form)
     return render(request, 'blog/post_edit.html', {'form': form})
 
 
@@ -212,7 +213,7 @@ def comment_remove(request, pk):
     return redirect('post_detail', pk=comment.post.pk)
 
 @csrf_exempt
-def upload_image(request):
+def upload_image(request, pk=0):
     if request.method != "POST":
         return JsonResponse({'Error Message': "Wrong request"})
 
