@@ -39,7 +39,9 @@
 						{% for tag in post.tags.all %}
 							<a role="button" class="btn btn-outline-secondary btn-sm" href="{% url 'tag' pk=tag.pk %}">{{ tag.name }}</a>
 						{% endfor %}
-						<hr class="my-4" />
+						{% if post.tags.count %}
+								<hr class="my-4" />
+						{% endif %}
 						<a class="btn btn-primary" style="margin-bottom: 24px;" href="{% url 'add_comment_to_post' pk=post.pk %}">댓글 작성하기</a>
 						{% for comment in post.comments.all %}
 							{% if user.is_authenticated %}
