@@ -24,8 +24,10 @@ class Category(models.Model):
         return Category.objects.count()
 
     name = models.CharField(max_length=200)
+    sub_title = models.CharField(max_length=200, blank=True, null=True)
     is_publish = models.BooleanField(default=True)
     ordering = models.PositiveSmallIntegerField(default=default_ordering)
+    image = models.ImageField(null=True, blank=True, upload_to='category/')
 
     def __str__(self):
         return self.name
