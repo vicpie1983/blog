@@ -34,7 +34,7 @@
 						{{ post.text|safe}}
 						{% if post.series.count %}
 								<hr class="my-4" />
-									<p style="font-size: 16px; font-weight: bold; color: rgb(108,117,125);">시리즈: 
+									<p style="font-size: 16px; font-weight: bold; color: rgb(108,117,125);">시리즈 - 
 									{% for series in post.series.all %}
 											<span><a style="text-decoration: none; color: rgb(108,117,125);" href="{% url 'series' pk=series.pk %}">{{ series.name }}</a></span>
 									{% endfor %}
