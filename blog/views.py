@@ -273,6 +273,7 @@ def category(request, pk):
         right_index = paginator.num_pages
 
     page_range = range(left_index, right_index + 1)
+    print(len(posts))
     return render(request, 'blog/category.html', {'category': category, 'posts': page_obj, 'page_range': page_range, 'paginator': paginator})
 
 # tag_detail

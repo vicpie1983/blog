@@ -33,15 +33,20 @@
                             {{ post.published_date|date:'Y년 n월 j일 H시 i분' }}
                         </p>
                     </div>
-                    <!-- Divider-->
-                    <hr class="my-4" />
+							{% if not posts.has_other_pages %}
+									{% if not forloop.last %}
+											<!-- Divider-->
+											<hr class="my-4" />
+									{% endif %}
+							{% else %}
+									<!-- Divider-->
+									<hr class="my-4" />
+							{% endif %}
 					{% empty %}
                     <div class="post-preview">
-						<h2 class="post-title">현재 준비중</h2>
-						<h3 class="post-subtitle">컨텐츠가 없습니다.</h3>
+						<h2 class="post-title">검색된 컨텐츠가 없습니다.</h2>
+						<h3 class="post-subtitle">비공개 컨텐츠이거나 삭제된 컨텐츠일 수도 있습니다.</h3>
                     </div>
-                    <!-- Divider-->
-                    <hr class="my-4" />
 					{% endfor %}
                     <!-- Pager-->
                     <div class="d-flex justify-content-center mb-4">
