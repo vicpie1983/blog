@@ -14,13 +14,15 @@
 									<a href="{% url 'post_publish' pk=post.pk %}">발행</a>
 								{% endif %}
 							{% endif %}
-                            <h1>{{ post.title }}</h1>
                             <span class="meta">
 								<a href="{% url 'category' pk=post.category.pk %}">{{ post.category.name }}</a>
-								{% if post.published_date %}
-									{{ post.published_date|date:'Y년 n월 j일 H시 i분' }}
-								{% endif %}
-                            </span>
+							</span>
+                            <h1>{{ post.title }}</h1>
+							{% if post.published_date %}
+									<span class="meta">
+											{{ post.published_date|date:'Y년 n월 j일 H시 i분' }}
+									</span>
+							{% endif %}
                         </div>
                     </div>
                 </div>
