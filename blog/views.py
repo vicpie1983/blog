@@ -306,7 +306,7 @@ def tag(request, pk):
         right_index = paginator.num_pages
 
     page_range = range(left_index, right_index + 1)
-    return render(request, 'blog/post_list.html', {'posts': page_obj, 'page_range': page_range, 'paginator': paginator})
+    return render(request, 'blog/post_list.html', {'tag': tag, 'posts': page_obj, 'page_range': page_range, 'paginator': paginator})
 
 
 # series_detail
@@ -339,7 +339,35 @@ def series(request, pk):
         right_index = paginator.num_pages
 
     page_range = range(left_index, right_index + 1)
-    return render(request, 'blog/post_list.html', {'posts': page_obj, 'page_range': page_range, 'paginator': paginator})
+    return render(request, 'blog/post_list.html', {'series': series, 'posts': page_obj, 'page_range': page_range, 'paginator': paginator})
+
+
+def series_list(request):
+    series = Series.objects.all().order_by('-created_date')
+
+    page = request.GET.get('page')
+    posts_per_page = settings.POSTS_PER_PAGE # 페이지당 포스트 개수
+    paginator = Paginator(series, posts_per_page)
+
+    try:
+        page_obj = paginator.page(page)
+    except PageNotAnInteger:
+        page = 1
+        page_obj = paginator.page(page)
+    except EmptyPage:
+        page = paginator.num_pages
+        page_obj = paginator.page(page)
+
+    left_index = (int(page) - 2)
+    if left_index < 1:
+        left_index = 1
+
+    right_index = (int(page) + 2)
+    if right_index > paginator.num_pages:
+        right_index = paginator.num_pages
+
+    page_range = range(left_index, right_index + 1)
+    return render(request, 'blog/series_list.html', {'posts': page_obj, 'page_range': page_range, 'paginator': paginator})
 
 
 def search(request):

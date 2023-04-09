@@ -7,8 +7,14 @@
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-md-10 col-lg-8 col-xl-7">
                         <div class="site-heading">
+						{% if series %}
+							<h1>{{ series.name }}</h1>
+						{% elif tag %}
+							<h1>{{ tag.name }}</h1>
+						{% else %}
                             <h1>빅파이</h1>
                             <span class="subheading">VicPie(Victory Pie)</span>
+						{% endif %}
                         </div>
                     </div>
                 </div>
@@ -25,9 +31,6 @@
 							<h2 class="post-title">{{ post.title }}</h2>
                         </a>
                         <p class="post-meta">
-							{% for series in post.series.all %}
-							<a href="{% url 'series' pk=series.pk %}">{{ series.name }}</a>
-							{% endfor %}
 							<a href="{% url 'category' pk=post.category.pk %}">{{ post.category.name }}</a>
                             {{ post.published_date|date:'Y년 n월 j일 H시 i분' }}
                         </p>

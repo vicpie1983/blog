@@ -25,9 +25,6 @@
 							<h2 class="post-title">{{ post.title }}</h2>
                         </a>
                         <p class="post-meta">
-							{% for series in post.series.all %}
-							<a href="{% url 'series' pk=series.pk %}">{{ series.name }}</a>
-							{% endfor %}
 							<a href="{% url 'category' pk=post.category.pk %}">{{ post.category.name }}</a>
 							작성일: {{ post.created_date|date:'y년 n월 j일 H시 i분' }}
                         </p>

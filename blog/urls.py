@@ -17,6 +17,7 @@ urlpatterns = [
     path('post/<int:pk>/edit/upload_image', views.upload_image, name="upload_image"),
     path('category/<int:pk>/', views.category, name='category'),
     path('tag/<int:pk>/', views.tag, name='tag'),
+    path('series/', views.series_list, name='series_list'),
     path('series/<int:pk>/', views.series, name='series'),
     path('search/', views.search, name='search'),
 ]
