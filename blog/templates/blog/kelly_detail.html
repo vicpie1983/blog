@@ -1,0 +1,70 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+        <!-- Page Header-->
+        <header class="masthead" style="background-image: url('/static/img/post-bg.jpg')">
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading">
+                            <h1>켈리의 공식</h1>
+							<span class="subheading">Kelly formula</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- Post Content-->
+        <article class="mb-4">
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+							<main class="form-signin w-100 m-auto">
+							{% if form.errors %}
+								<p>수치값이 올바르지 않습니다.</p>
+								<p>여러분의 전략이 승률은 50%, 수익률은 5%, 손실률은 2%라면</p>
+								<p>승률: 0.5, 수익률: 0.05, 손실률: 0.02 를 입력해주십시오.</p>
+							{% endif %}
+
+									<form method="POST" action="{% url 'kelly' %}">
+											{% csrf_token %}
+									<h2 class="h3 mb-3 fw-normal">전략의 수치값</h2>
+
+									<div class="form-floating">
+									  <input type="text" name="probability" required id="floatingP" class="form-control" placeholder="승률">
+									  <label for="floatingP">승률</label>
+									</div>
+									<div class="form-floating">
+									  <input type="text" name="win" required id="floatingWin" placeholder="수익률" class="form-control">
+									  <label for="floatingWin">수익률</label>
+									</div>
+									<div class="form-floating">
+									  <input type="text" name="loss" required id="floatingLoss" placeholder="손실률" class="form-control">
+									  <label for="floatingLoss">손실률</label>
+									</div>
+
+									<button class="w-100 btn btn-lg btn-primary" type="submit">계산</button>
+									</form>
+									{% if data %}
+											<p>승률: {{ data.p }}, 수익률: {{ data.win }}, 손실률: {{ data.loss }}</p>
+											<p>게임 초기 금액: 100<br>
+											게임 횟수: {{ data.game_count }} 회</p>
+											<p>최적 베팅비율: {{ data.best_bet }}<br>
+											최적 베팅일 때의 최종금액: {{ data.best_money }}</p>
+											<p>10% 정률 베팅시 최종금액: {{ data.bet_10 }}<br>
+											20% 정률 베팅시 최종금액: {{ data.bet_20 }}<br>
+											30% 정률 베팅시 최종금액: {{ data.bet_30 }}<br>
+											40% 정률 베팅시 최종금액: {{ data.bet_40 }}<br>
+											50% 정률 베팅시 최종금액: {{ data.bet_50 }}<br>
+											60% 정률 베팅시 최종금액: {{ data.bet_60 }}<br>
+											70% 정률 베팅시 최종금액: {{ data.bet_70 }}<br>
+											80% 정률 베팅시 최종금액: {{ data.bet_80 }}<br>
+											90% 정률 베팅시 최종금액: {{ data.bet_90 }}<br>
+											100% 정률 베팅시 최종금액: {{ data.bet_100 }}</p>
+									{% endif %}
+							</main>
+                    </div>
+                </div>
+            </div>
+        </article>
+{% endblock %}

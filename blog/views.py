@@ -9,7 +9,8 @@ from django.views.decorators.csrf import csrf_exempt
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 from .models import Post, Category, Comment, Tag, Series
-from .forms import PostForm, CommentForm
+from .forms import PostForm, CommentForm, KellyForm
+from .kelly import simulation
 
 
 def post_list(request):
@@ -408,4 +409,22 @@ def search(request):
         return render(request, 'blog/search.html', {'posts': page_obj, 'page_range': page_range, 'paginator': paginator, 'query': query, 'result_count': result_count})
     else:
         return redirect(referer)
+
+
+def kelly_detail(request):
+    if request.method == "POST":
+        form = KellyForm(request.POST)
+        if form.is_valid():
+            cleaned_p = form.cleaned_data['probability']
+            cleaned_win = form.cleaned_data['win']
+            cleaned_loss = form.cleaned_data['loss']
+            data = simulation(cleaned_p, cleaned_win, cleaned_loss)
+            data['p'] = cleaned_p
+            data['win'] = cleaned_win
+            data['loss'] = cleaned_loss
+            return render(request, 'blog/kelly_detail.html', {'data': data})
+        else:
+            return render(request, 'blog/kelly_detail.html', {'form': form})
+
+    return render(request, 'blog/kelly_detail.html')
 

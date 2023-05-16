@@ -1,5 +1,6 @@
 from django import forms
 from .models import Post, Comment
+from django.core.exceptions import ValidationError
 
 
 class PostForm(forms.ModelForm):
@@ -29,3 +30,30 @@ class CommentForm(forms.ModelForm):
             "text": "내용",
         }
 
+
+class KellyForm(forms.Form):
+    probability = forms.FloatField(required=True)
+    win = forms.FloatField(required=True)
+    loss = forms.FloatField(required=True)
+
+    def clean_probability(self):
+        data = self.cleaned_data['probability']
+
+        if not isinstance(data, float):
+            raise ValidationError('소수점 형태로 입력해주십시오')
+
+        if data > 1.0:
+            raise ValidationError('최대값을 1.0 입니다')
+        return abs(data)
+
+    def clean_win(self):
+        data = self.cleaned_data['win']
+        if not isinstance(data, float):
+            raise ValidationError('소수점 형태로 입력해주십시오')
+        return abs(data)
+
+    def clean_loss(self):
+        data = self.cleaned_data['loss']
+        if not isinstance(data, float):
+            raise ValidationError('소수점 형태로 입력해주십시오')
+        return abs(data)

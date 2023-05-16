@@ -20,5 +20,6 @@ urlpatterns = [
     path('series/', views.series_list, name='series_list'),
     path('series/<int:pk>/', views.series, name='series'),
     path('search/', views.search, name='search'),
+    path('kelly/', views.kelly_detail, name='kelly'),
 ]
 
